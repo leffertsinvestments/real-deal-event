@@ -29,6 +29,13 @@ import Layout from "../layouts/Layout.astro";
       flex-direction: column;
       gap: 1rem;
       margin-bottom: 2rem;
+      align-items: center;
+    }
+
+    .form-logo {
+      width: 120px;
+      height: auto;
+      margin-bottom: 1rem;
     }
 
     input,
@@ -41,6 +48,8 @@ import Layout from "../layouts/Layout.astro";
       color: #000;
       outline: none;
       transition: all 0.3s ease;
+      width: 100%;
+      max-width: 400px;
     }
 
     button {
@@ -52,6 +61,8 @@ import Layout from "../layouts/Layout.astro";
       font-size: 1rem;
       cursor: pointer;
       transition: all 0.3s ease;
+      max-width: 400px;
+      width: 100%;
     }
 
     button:hover {
@@ -107,7 +118,6 @@ import Layout from "../layouts/Layout.astro";
       margin-bottom: 4px;
     }
 
-    /* Overlay for selection */
     .project-overlay {
       position: absolute;
       inset: 0;
@@ -184,6 +194,9 @@ import Layout from "../layouts/Layout.astro";
 
   <div id="app">
     <form id="submission-form">
+      <!-- Lefferts Logo at the top -->
+      <img class="form-logo" src="/images/lefferts.png" alt="Lefferts Logo" />
+
       <input type="text" name="name" placeholder="Name" required />
       <input type="email" name="email" placeholder="Email" required />
       <input type="tel" name="phone" placeholder="Phone #" required />
@@ -224,8 +237,16 @@ import Layout from "../layouts/Layout.astro";
         <!-- 72 Carlyle -->
         <div class="project-option" data-value="72 Carlyle">
           <div class="project-image-container">
-            <img class="logo" src="/images/72c-logo.png" alt="72 Carlyle Logo" />
-            <img class="main-image" src="/images/72-carlyle.jpg" alt="72 Carlyle" />
+            <img
+              class="logo"
+              src="/images/72c-logo.png"
+              alt="72 Carlyle Logo"
+            />
+            <img
+              class="main-image"
+              src="/images/72-carlyle.jpg"
+              alt="72 Carlyle"
+            />
             <div class="project-overlay">
               <svg viewBox="0 0 24 24">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -238,8 +259,16 @@ import Layout from "../layouts/Layout.astro";
         <!-- Future Project -->
         <div class="project-option" data-value="Future Project">
           <div class="project-image-container">
-            <img class="logo" src="/images/lefferts.png" alt="Future Project Logo" />
-            <img class="main-image" src="/images/11th.jpg" alt="Future Project" />
+            <img
+              class="logo"
+              src="/images/lefferts.png"
+              alt="Future Project Logo"
+            />
+            <img
+              class="main-image"
+              src="/images/11th.jpg"
+              alt="Future Project"
+            />
             <div class="project-overlay">
               <svg viewBox="0 0 24 24">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -299,9 +328,13 @@ import Layout from "../layouts/Layout.astro";
         selectedProject = option.getAttribute("data-value");
         favoriteProjectInput.value = selectedProject;
         projectOptions.forEach((o) =>
-          o.querySelector(".project-image-container").classList.remove("selected")
+          o
+            .querySelector(".project-image-container")
+            .classList.remove("selected")
         );
-        option.querySelector(".project-image-container").classList.add("selected");
+        option
+          .querySelector(".project-image-container")
+          .classList.add("selected");
       });
     });
 
