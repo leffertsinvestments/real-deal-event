@@ -4,64 +4,86 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout>
   <style>
+    @font-face {
+      font-family: "hudson";
+      src: url("/fonts/hudson.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+	    @font-face {
+      font-family: "neue";
+      src: url("/fonts/neue-m.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+
     body,
     html {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
+      font-family: "neue", sans-serif;
       background: #fff;
       color: #000;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      overflow-y: auto;
     }
 
     #app {
       width: 90%;
-      max-width: 600px;
+      max-width: 650px;
       text-align: center;
+      padding: 1rem;
     }
 
     form {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1.2rem;
       margin-bottom: 2rem;
       align-items: center;
     }
 
     .form-logo {
-      width: 120px;
+      width: 140px;
       height: auto;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     input,
     select {
-      padding: 0.8rem;
+      padding: 1rem;
       border: 1px solid #000;
-      border-radius: 4px;
-      font-size: 1rem;
+      font-size: 1.1rem;
       background: #fff;
       color: #000;
       outline: none;
-      transition: all 0.3s ease;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
       width: 100%;
-      max-width: 400px;
+      max-width: 450px;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #555;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     }
 
     button {
-      padding: 0.8rem;
+      padding: 1rem;
       background-color: #fff;
       color: #000;
-      border: 1px solid #000;
-      border-radius: 4px;
-      font-size: 1rem;
+      border: 2px solid #000;
+      font-size: 1.1rem;
       cursor: pointer;
-      transition: all 0.3s ease;
-      max-width: 400px;
+      transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+      max-width: 450px;
       width: 100%;
     }
 
@@ -71,9 +93,8 @@ import Layout from "../layouts/Layout.astro";
     }
 
     .project-prompt {
-      font-size: 1.1rem;
-      margin-bottom: 0.5rem;
-      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 0.8rem;
     }
 
     .projects {
@@ -85,53 +106,65 @@ import Layout from "../layouts/Layout.astro";
 
     .project-option {
       cursor: pointer;
-      width: 120px;
+      width: 130px;
       text-align: center;
       position: relative;
+      will-change: transform;
+      transition: transform 0.3s ease-in-out;
     }
 
     .project-image-container {
       border: 2px solid #000;
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
       width: 100%;
-      height: 100px;
+      height: 110px;
       display: flex;
       justify-content: center;
       align-items: center;
       background: #fff;
       position: relative;
       flex-direction: column;
+      will-change: transform;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .project-image-container:hover {
+      transform: translateY(-4px);
     }
 
     .project-image-container img.main-image {
       width: 100%;
-      height: 60%;
+      height: 65%;
       object-fit: cover;
       display: block;
+      border-bottom: 1px solid #ddd;
     }
 
     .project-image-container img.logo {
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
       object-fit: contain;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .project-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.4);
       opacity: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       transition: opacity 0.3s ease;
+      border-radius: 10px;
+      will-change: opacity;
+      pointer-events: none;
     }
 
     .project-overlay svg {
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       stroke: #fff;
       stroke-width: 3;
       fill: none;
@@ -142,9 +175,8 @@ import Layout from "../layouts/Layout.astro";
     }
 
     .project-option-label {
-      margin-top: 0.3rem;
+      margin-top: 0.4rem;
       font-size: 1rem;
-      font-weight: bold;
       color: #000;
     }
 
@@ -152,7 +184,7 @@ import Layout from "../layouts/Layout.astro";
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(2, 60px);
-      gap: 2px;
+      gap: 3px;
       width: 100%;
       height: 100%;
     }
@@ -164,11 +196,12 @@ import Layout from "../layouts/Layout.astro";
     }
 
     .hidden {
-      display: none;
+      display: none !important;
     }
 
     .fade-in {
       animation: fadeIn 1s forwards;
+      transform: translateZ(0);
     }
 
     @keyframes fadeIn {
@@ -181,25 +214,68 @@ import Layout from "../layouts/Layout.astro";
     }
 
     #thank-you {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
     }
 
     #qr-code img {
-      width: 200px;
-      height: 200px;
+      width: 220px;
+      height: 220px;
       margin-top: 1rem;
+    }
+
+    @media (max-width: 1024px) {
+      #app {
+        padding: 2rem;
+      }
+      .projects {
+        gap: 1.5rem;
+      }
+      .project-option {
+        width: 140px;
+      }
+      input,
+      select,
+      button {
+        font-size: 1.15rem;
+        max-width: 100%;
+      }
+      #thank-you {
+        font-size: 2rem;
+      }
+      #qr-code img {
+        width: 240px;
+        height: 240px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .projects {
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        justify-content: center;
+      }
+      .project-option {
+        width: calc(50% - 0.5rem);
+        max-width: 140px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .project-option {
+        width: 100%;
+        max-width: 200px;
+      }
     }
   </style>
 
   <div id="app">
     <form id="submission-form">
-      <!-- Lefferts Logo at the top -->
       <img class="form-logo" src="/images/lefferts.png" alt="Lefferts Logo" />
 
       <input type="text" name="name" placeholder="Name" required />
       <input type="email" name="email" placeholder="Email" required />
-      <input type="tel" name="phone" placeholder="Phone #" required />
+      <input type="tel" name="phone" placeholder="Phone Number" required />
 
       <div class="project-prompt">
         Please select the project you are most interested in:
@@ -212,9 +288,9 @@ import Layout from "../layouts/Layout.astro";
             <img class="logo" src="/images/72p-logo.svg" alt="72 Park Logo" />
             <img class="main-image" src="/images/72-park.jpg" alt="72 Park" />
             <div class="project-overlay">
-              <svg viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+              <svg viewBox="0 0 24 24"
+                ><polyline points="20 6 9 17 4 12"></polyline></svg
+              >
             </div>
           </div>
           <div class="project-option-label">72 Park</div>
@@ -226,9 +302,9 @@ import Layout from "../layouts/Layout.astro";
             <img class="logo" src="/images/palma-logo.png" alt="Palma Logo" />
             <img class="main-image" src="/images/palma.jpg" alt="Palma" />
             <div class="project-overlay">
-              <svg viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+              <svg viewBox="0 0 24 24"
+                ><polyline points="20 6 9 17 4 12"></polyline></svg
+              >
             </div>
           </div>
           <div class="project-option-label">Palma</div>
@@ -248,9 +324,9 @@ import Layout from "../layouts/Layout.astro";
               alt="72 Carlyle"
             />
             <div class="project-overlay">
-              <svg viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+              <svg viewBox="0 0 24 24"
+                ><polyline points="20 6 9 17 4 12"></polyline></svg
+              >
             </div>
           </div>
           <div class="project-option-label">72 Carlyle</div>
@@ -270,9 +346,9 @@ import Layout from "../layouts/Layout.astro";
               alt="Future Project"
             />
             <div class="project-overlay">
-              <svg viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+              <svg viewBox="0 0 24 24"
+                ><polyline points="20 6 9 17 4 12"></polyline></svg
+              >
             </div>
           </div>
           <div class="project-option-label">Future Project</div>
@@ -288,9 +364,9 @@ import Layout from "../layouts/Layout.astro";
               <img src="/images/11th.jpg" alt="Future Project" />
             </div>
             <div class="project-overlay">
-              <svg viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+              <svg viewBox="0 0 24 24"
+                ><polyline points="20 6 9 17 4 12"></polyline></svg
+              >
             </div>
           </div>
           <div class="project-option-label">All</div>
@@ -318,43 +394,47 @@ import Layout from "../layouts/Layout.astro";
     const form = document.getElementById("submission-form");
     const thankYou = document.getElementById("thank-you");
     const qr = document.getElementById("qr-code");
-    const projectOptions = document.querySelectorAll(".project-option");
     const favoriteProjectInput = document.getElementById("favorite_project");
 
     let selectedProject = null;
 
-    projectOptions.forEach((option) => {
-      option.addEventListener("click", () => {
-        selectedProject = option.getAttribute("data-value");
-        favoriteProjectInput.value = selectedProject;
-        projectOptions.forEach((o) =>
-          o
-            .querySelector(".project-image-container")
-            .classList.remove("selected")
-        );
-        option
-          .querySelector(".project-image-container")
-          .classList.add("selected");
-      });
+    document.querySelector(".projects").addEventListener("click", (e) => {
+      const option = e.target.closest(".project-option");
+      if (!option) return;
+      selectedProject = option.dataset.value;
+      favoriteProjectInput.value = selectedProject;
+
+      document
+        .querySelectorAll(".project-image-container")
+        .forEach((el) => el.classList.remove("selected"));
+      option
+        .querySelector(".project-image-container")
+        .classList.add("selected");
     });
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-
       if (!selectedProject) {
         alert("Please select a favorite project.");
         return;
       }
 
-      form.style.display = "none";
+      form.classList.add("hidden");
       thankYou.classList.remove("hidden");
 
       setTimeout(() => {
-        thankYou.style.display = "none";
+        thankYou.classList.add("hidden");
         qr.classList.remove("hidden");
 
         setTimeout(() => {
-          window.location.reload();
+          qr.classList.add("hidden");
+          form.reset();
+          selectedProject = null;
+          favoriteProjectInput.value = "";
+          document
+            .querySelectorAll(".project-image-container")
+            .forEach((el) => el.classList.remove("selected"));
+          form.classList.remove("hidden");
         }, 8000);
       }, 1500);
     });
